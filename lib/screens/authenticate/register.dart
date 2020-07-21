@@ -57,14 +57,12 @@ class _RegisterState extends State<Register> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            
                             TextFormField(
                               cursorColor: Colors.yellow,
                               textCapitalization: TextCapitalization.words,
-                              
                               decoration: textInputDecoration.copyWith(
                                   hintText: getTranslated(context, 'name')),
-                              validator: (val) => val.length < 5
+                              validator: (val) => val.length > 10
                                   ? getTranslated(context, 'name_err')
                                   : null,
                               onChanged: (value) {
@@ -80,8 +78,9 @@ class _RegisterState extends State<Register> {
                               cursorColor: Colors.yellow,
                               decoration: textInputDecoration.copyWith(
                                   hintText: 'Email'),
-                              validator: (val) =>
-                                  val.isEmpty ? getTranslated(context, 'email_error') : null,
+                              validator: (val) => val.isEmpty
+                                  ? getTranslated(context, 'email_error')
+                                  : null,
                               onChanged: (value) {
                                 setState(() {
                                   email = value;
@@ -111,8 +110,8 @@ class _RegisterState extends State<Register> {
                               height: 50,
                               child: RaisedButton(
                                 shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
                                 onPressed: () async {
                                   if (_kunciForm.currentState.validate()) {
                                     //print(await http.read('https://flutter.dev/'));
@@ -121,11 +120,12 @@ class _RegisterState extends State<Register> {
                                       loading = true;
                                     });
                                     dynamic keputusan = await _auth
-                                        .signUpWithEmail(email, password,name);
+                                        .signUpWithEmail(email, password, name);
 
                                     if (keputusan == null) {
                                       setState(() {
-                                        error = getTranslated(context, 'reg_error');
+                                        error =
+                                            getTranslated(context, 'reg_error');
                                         loading = false;
                                       });
                                     }
@@ -134,20 +134,29 @@ class _RegisterState extends State<Register> {
                                 color: Colors.white,
                                 child: Text(
                                   getTranslated(context, 'reg'),
-                                  style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text(getTranslated(context, 'signin'),style: TextStyle(color:Colors.white),),
+                                Text(
+                                  getTranslated(context, 'signin'),
+                                  style: TextStyle(color: Colors.white),
+                                ),
                                 FlatButton(
                                     onPressed: () {
                                       //firstTime.setFirstTime(false);
                                       widget.tukarPandangan();
                                     },
-                                    child: Text(getTranslated(context, 'signinnow'),style: TextStyle(color:Colors.yellow[600]),)),
+                                    child: Text(
+                                      getTranslated(context, 'signinnow'),
+                                      style:
+                                          TextStyle(color: Colors.yellow[600]),
+                                    )),
                               ],
                             ),
                             SizedBox(

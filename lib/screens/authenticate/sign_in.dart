@@ -23,8 +23,8 @@ class _SingInState extends State<SingIn> {
   bool loading = false;
   String email = '';
   String password = '';
-  String error = '';
-  String errMes ='';
+  dynamic error = '';
+  String errMes = '';
   void _changeLanguage(Language language) async {
     Locale _temp = await setLocale(language.languageCode);
 
@@ -35,11 +35,11 @@ class _SingInState extends State<SingIn> {
 
   @override
   Widget build(BuildContext context) {
-    final err = Provider.of<AuthService>(context);
+    //final firstTime = Provider.of<FirstTime>(context);
     return loading
         ? Loading()
         : Scaffold(
-          resizeToAvoidBottomInset : false,
+            resizeToAvoidBottomInset: false,
             body: Stack(children: <Widget>[
               Container(
                 decoration: BoxDecoration(
@@ -158,12 +158,9 @@ class _SingInState extends State<SingIn> {
 
                                         if (keputusan == null) {
                                           setState(() {
-                                            error = 
-                                            getTranslated(
+                                            error = getTranslated(
                                                 context, 'signin_error');
-                                            //err.err;
-                                            
-                                            
+
                                             loading = false;
                                           });
                                         }
@@ -172,7 +169,9 @@ class _SingInState extends State<SingIn> {
                                     color: Colors.white,
                                     child: Text(
                                       getTranslated(context, 'login'),
-                                      style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
@@ -201,44 +200,43 @@ class _SingInState extends State<SingIn> {
                                   height: 12,
                                 ),
                                 Text(
-                                  error??'Entah',
+                                  error ?? 'Entah',
                                   style: TextStyle(
                                       color: Colors.red, fontSize: 18),
                                 ),
                                 DropdownButton(
-                onChanged: (Language language) {
-                  _changeLanguage(language);
-                },
-                hint: Text(
-                  getTranslated(context, 'lang'),
-                  style: TextStyle(color: Colors.white),
-                ),
-                icon: Icon(
-                  Icons.language,
-                  color: Colors.yellow[600],
-                ),
-                underline: SizedBox(),
-                items: Language.languageList()
-                    .map<DropdownMenuItem<Language>>((lang) =>
-                        DropdownMenuItem(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              Text(lang.flag),
-                              Text(lang.name)
-                            ],
-                          ),
-                          value: lang,
-                        ))
-                    .toList(),
-              )
+                                  onChanged: (Language language) {
+                                    _changeLanguage(language);
+                                  },
+                                  hint: Text(
+                                    getTranslated(context, 'lang'),
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  icon: Icon(
+                                    Icons.language,
+                                    color: Colors.yellow[600],
+                                  ),
+                                  underline: SizedBox(),
+                                  items: Language.languageList()
+                                      .map<DropdownMenuItem<Language>>((lang) =>
+                                          DropdownMenuItem(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: <Widget>[
+                                                Text(lang.flag),
+                                                Text(lang.name)
+                                              ],
+                                            ),
+                                            value: lang,
+                                          ))
+                                      .toList(),
+                                )
                               ],
                             )),
-                            
                       ],
                     )),
               ),
-              
             ]),
           );
   }

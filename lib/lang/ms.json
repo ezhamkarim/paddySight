@@ -11,7 +11,7 @@
     "regnow":"Daftar Sekarang",
     "load":"Memuat",
     "name":"Nama",
-    "name_err":"Masukkan aksara lebih dari 5",
+    "name_err":"Masukkan aksara kurang dari 10",
     "reg":"Daftar",
     "draw_poly": "Tolong lukis poligon",
     "signin":"Sudah Ada Akaun?",

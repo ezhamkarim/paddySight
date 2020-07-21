@@ -29,7 +29,8 @@ Future<PolygonData> createPolygon(
     print("Berjaya");
     return PolygonData.fromJson(json.decode(response.body));
   } else {
-    throw Exception('Failed to create polygon.');
+    print('DALAM NIII');
+    return null;
   }
 }
 
@@ -223,9 +224,13 @@ class _RegisterMapsState extends State<RegisterMaps> {
                       shape: CircleBorder(),
                       color: Colors.black54,
                       onPressed: () {
-                        polygonLatLngs.clear();
-                        _polygon.clear();
-                        print('Polygon is ' + _isPolygon.toString());
+                        setState(() {
+                          polygonLatLngs.clear();
+                          _polygon.clear();
+                          geoCoordinate.clear();
+                          geoPoints.clear();
+                          //geoJson.clear();
+                        });
                       },
                       child: Icon(
                         Icons.delete,
@@ -286,6 +291,7 @@ class _RegisterMapsState extends State<RegisterMaps> {
                             .findAddressesFromCoordinates(coordinates);
                         var first = addresses.first;
 
+                        print('THEE MAP OF GEOJSON' + geoJson.toString());
                         createPolygon(geoJson, inputPolygonName)
                             .then((PolygonData onValue) {
                           setState(() {
@@ -303,6 +309,15 @@ class _RegisterMapsState extends State<RegisterMaps> {
                             DatabaseService(uid: pengguna.uid)
                                 .tambahFirstSatelliteImage();
                           });
+
+                          firstTime.setPilihMaps(true);
+                          DatabaseService(uid: pengguna.uid).tambahUserData(
+                              polygonLatLngs.toList().toString(),
+                              polygonLatLngs[0].latitude.toString(),
+                              polygonLatLngs[0].longitude.toString(),
+                              first.subLocality);
+                        }).catchError((e) {
+                          _tunjukDialog(context);
                         });
                         //print('HAII NI ID' +id);
                         // polyData.setComplete(true);
@@ -313,12 +328,7 @@ class _RegisterMapsState extends State<RegisterMaps> {
                         //     geoPoints.toList().toString());
                         // print('HAIII GEOPOINTS NI' +
                         //     geoCoordinate.toList().toString());
-                        firstTime.setPilihMaps(true);
-                        DatabaseService(uid: pengguna.uid).tambahUserData(
-                            polygonLatLngs.toList().toString(),
-                            polygonLatLngs[0].latitude.toString(),
-                            polygonLatLngs[0].longitude.toString(),
-                            first.subLocality);
+
                       }
                     },
                   ),
@@ -347,5 +357,25 @@ class _RegisterMapsState extends State<RegisterMaps> {
           ],
         ),
       );
+  }
+
+  void _tunjukDialog(BuildContext context) {
+    final alert = AlertDialog(
+      title: Text('Cannot Register Polygon'),
+      content: Text('Polygon is out of boundry'),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Close'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
+    );
+    showDialog(
+        context: context,
+        builder: (_) {
+          return alert;
+        });
   }
 }

@@ -39,7 +39,8 @@ Future<Satellite> searchImage(String polygonID, String startDate,
 
     return Satellite.fromJson(json.decode(response.body));
   } else {
-    throw Exception('Failed to search Image.');
+    print('GAGAL');
+    return null;
   }
 }
 
@@ -51,7 +52,7 @@ Future<SoilData> getSoil(
   if (response.statusCode == 200) {
     return SoilData.fromJson(jsonDecode(response.body));
   } else {
-    throw Exception('Failed to search Image.');
+    return Future.error('Error');
   }
 }
 
@@ -151,11 +152,10 @@ class _HomeState extends State<Home> {
                                               builder: (context, snapshot) {
                                                 if (snapshot.hasData) {
                                                   return Text(
-                                                    'Hello ' +
-                                                        snapshot.data.name,
+                                                    'Hi ' + snapshot.data.name,
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize: 35,
+                                                        fontSize: 30,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   );
@@ -620,6 +620,21 @@ class _HomeState extends State<Home> {
           });
     }
   }
+
+  void tunjukDialog(BuildContext context) {
+    AlertDialog(
+      title: Text('Cannot Register Field'),
+      content: Text('Field is out of boundry'),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Close'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
+    );
+  }
 }
 
 Future<WeatherData> getWeather(String polyID) async {
@@ -629,7 +644,7 @@ Future<WeatherData> getWeather(String polyID) async {
   if (response.statusCode == 200) {
     return WeatherData.fromJson(jsonDecode(response.body));
   } else {
-    throw Exception('Failed to search Image.');
+    return Future.error('Error');
   }
 }
 
@@ -935,6 +950,21 @@ class _WeatherState extends State<Weather> {
           ),
         ],
       ),
+    );
+  }
+
+  void tunjukDialog(BuildContext context) {
+    AlertDialog(
+      title: Text('Cannot Register Field'),
+      content: Text('Field is out of boundry'),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Close'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
     );
   }
 }

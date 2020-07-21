@@ -19,11 +19,14 @@ class _ViewMapsState extends State<ViewMaps> {
   @override
   Widget build(BuildContext context) {
     final pengguna = Provider.of<User>(context);
+    final searchError = Provider.of<Satellite>(context);
+
+    // if (searchError.newError == null) {
     return StreamBuilder<Satellite>(
         stream: DatabaseService(uid: pengguna.uid).satData,
         builder: (context, snapshot) {
           Satellite satellite = snapshot.data;
-          if (snapshot.hasData && snapshot.data.evi != null) {
+          if (satellite.falseColor != null) {
             return Scaffold(
                 appBar: AppBar(
                   title: Text(getTranslated(context, 'satellite_image'),
@@ -207,8 +210,35 @@ class _ViewMapsState extends State<ViewMaps> {
                   ),
                 ));
           } else {
-            return Loading();
+            return Scaffold(
+              body: AlertDialog(
+                title: Text('Cannot find Satellite Image'),
+                content: Text('Image is not ready'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Close'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              ),
+            );
           }
         });
+    // } else {
+    //   return AlertDialog(
+    //     title: Text('Cannot find Satellite Image'),
+    //     content: Text(searchError.newError),
+    //     actions: <Widget>[
+    //       FlatButton(
+    //         child: Text('Close'),
+    //         onPressed: () {
+    //           Navigator.pop(context);
+    //         },
+    //       )
+    //     ],
+    //   );
+    // }
   }
 }

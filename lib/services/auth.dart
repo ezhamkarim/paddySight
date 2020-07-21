@@ -5,11 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-class AuthService with ChangeNotifier {
-  AuthService();
+class AuthService {
 // sign in anon
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  String errorMessage;
+  dynamic errorMessage;
 
 //first time user bool
 
@@ -20,15 +19,6 @@ class AuthService with ChangeNotifier {
   User _penggunaFirebase(FirebaseUser user) {
     return user != null ? User(uid: user.uid) : null;
   }
-
-  void setError(String error) {
-    errorMessage = error;
-    print('Dalam setter auth service '+errorMessage);
-    notifyListeners();
-  }
-
-  String get err=> errorMessage;
-
 // auth change service user stream
 // Take a stream of firebase user and map into local user in _penggunaFirebase
   Stream<User> get user {
@@ -86,8 +76,7 @@ class AuthService with ChangeNotifier {
         default:
           errorMessage = "An undefined Error happened.";
       }
-      setError(errorMessage);
-      //print('error from sigin ' + e.toString());
+      print(errorMessage);
       return null;
     }
   }

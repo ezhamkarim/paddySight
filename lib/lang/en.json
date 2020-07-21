@@ -11,7 +11,7 @@
     "regnow":"Register Now",
     "load":"Load",
     "name":"Name",
-    "name_err":"Enter more than 5 char",
+    "name_err":"Enter less than 10 char",
     "reg":"Register",
     "draw_poly": "Please draw a polygon",
     "signin":"Have an account?",
